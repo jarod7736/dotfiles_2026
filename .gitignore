@@ -1,0 +1,23 @@
+# Machine-local overrides (never commit)
+*.local
+
+# Secrets
+.env
+*.pem
+*.p8
+*.key
+*.p12
+*.pfx
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Claude runtime/session data
+claude/.claude/projects/
+claude/.claude/plugins/
+claude/.claude/.credentials.json
+claude/.claude/todos/
+
+# Byobu runtime
+byobu/.byobu/.ssh-agent
