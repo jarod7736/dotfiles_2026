@@ -1,0 +1,11 @@
+workspace/*
+work/*
+tools/*
+Documents/*
+csvtest/*
+bin/*
+apt-vim/*
+*.scala
+*.tgz
+
+.databricks
