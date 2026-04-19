@@ -1,8 +1,0 @@
-{
-  "id": "12",
-  "subject": "Task 6: Migrate vim package",
-  "description": "Copy .vimrc into vim/ package, stow",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

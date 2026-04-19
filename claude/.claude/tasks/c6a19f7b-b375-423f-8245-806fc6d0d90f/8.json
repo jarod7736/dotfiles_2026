@@ -1,8 +1,0 @@
-{
-  "id": "8",
-  "subject": "Task 2: Sanitize .zshrc — remove hardcoded secrets",
-  "description": "Remove ANTHROPIC_API_KEY from ~/.zshrc, move to ~/.zshrc.local",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

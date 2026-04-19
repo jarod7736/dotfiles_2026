@@ -1,8 +1,0 @@
-{
-  "id": "13",
-  "subject": "Task 7: Migrate byobu package",
-  "description": "Copy .byobu/ into byobu/ package (excluding .ssh-agent), stow",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

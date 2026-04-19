@@ -1,8 +1,0 @@
-{
-  "id": "9",
-  "subject": "Task 3: Migrate zsh package",
-  "description": "Copy .zshrc/.zshenv/.zprofile into zsh/ package, stow",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

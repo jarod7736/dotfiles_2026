@@ -1,8 +1,0 @@
-{
-  "id": "14",
-  "subject": "Task 8: Migrate claude package",
-  "description": "Copy ~/.claude/ into claude/ package, stow",
-  "status": "in_progress",
-  "blocks": [],
-  "blockedBy": []
-}

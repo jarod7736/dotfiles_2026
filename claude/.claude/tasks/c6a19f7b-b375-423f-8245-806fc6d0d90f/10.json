@@ -1,8 +1,0 @@
-{
-  "id": "10",
-  "subject": "Task 4: Migrate bash package",
-  "description": "Copy .bashrc/.bash_logout into bash/ package, stow",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

@@ -39,7 +39,7 @@
       "mcp__claude_ai_Gmail__gmail_search_messages",
       "Bash(cat:*)",
       "Bash(/home/jarod7736/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh --project-dir /home/jarod7736/workspace/agents/gmail_sorter/holdfast-mail-triage)",
-      "Bash(git -C /home/jarod7736/workspace/ha-touchscreen rev-parse HEAD)",
+      "Bash(git:*)",
       "Bash(npm:*)",
       "Bash(command -v nvm)",
       "Bash(nvm ls:*)"

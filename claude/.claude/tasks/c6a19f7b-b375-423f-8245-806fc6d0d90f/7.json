@@ -1,8 +1,0 @@
-{
-  "id": "7",
-  "subject": "Task 1: Repo .gitignore and package directories",
-  "description": "Create .gitignore and all stow package dirs (zsh, bash, git, vim, byobu, claude)",
-  "status": "completed",
-  "blocks": [],
-  "blockedBy": []
-}

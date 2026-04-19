@@ -13,11 +13,28 @@
 .DS_Store
 Thumbs.db
 
-# Claude runtime/session data
+# Claude runtime/session data (exclude everything except settings)
 claude/.claude/projects/
 claude/.claude/plugins/
 claude/.claude/.credentials.json
 claude/.claude/todos/
+claude/.claude/backups/
+claude/.claude/cache/
+claude/.claude/debug/
+claude/.claude/file-history/
+claude/.claude/history.jsonl
+claude/.claude/ide/
+claude/.claude/paste-cache/
+claude/.claude/plans/
+claude/.claude/session-env
+claude/.claude/sessions/
+claude/.claude/shell-snapshots/
+claude/.claude/stats-cache.json
+claude/.claude/statsig/
+claude/.claude/tasks/
+claude/.claude/telemetry/
+claude/.claude/settings.local.json
+claude/.claude/policy-limits.json
 
 # Byobu runtime
 byobu/.byobu/.ssh-agent
