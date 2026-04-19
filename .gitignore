@@ -13,8 +13,12 @@
 .DS_Store
 Thumbs.db
 
-# Claude runtime/session data (exclude everything except settings)
-claude/.claude/projects/
+# Claude runtime/session data (exclude everything except settings and memory)
+claude/.claude/projects/*
+!claude/.claude/projects/*/
+claude/.claude/projects/*/*
+!claude/.claude/projects/*/memory
+!claude/.claude/projects/*/memory/**
 claude/.claude/plugins/
 claude/.claude/.credentials.json
 claude/.claude/todos/
