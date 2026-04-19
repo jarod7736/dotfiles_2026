@@ -1,0 +1,8 @@
+{
+  "id": "11",
+  "subject": "Task 5: Migrate git package",
+  "description": "Copy .gitconfig/.gitignore into git/ package, add .gitconfig.local include, stow",
+  "status": "completed",
+  "blocks": [],
+  "blockedBy": []
+}

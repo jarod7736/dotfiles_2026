@@ -1,0 +1,106 @@
+<h2>New Light Card — Final Design</h2>
+<p class="subtitle">Full-width cards. Toggle = tap. Brightness = drag. No conflicts.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Living Room — Lights section</div>
+  <div class="mockup-body" style="background:#0f1117;padding:16px;font-family:system-ui,sans-serif;">
+
+    <!-- Section header -->
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:10px;padding:0 2px;">Lights</div>
+
+    <!-- Light card 1: ON, dimmable -->
+    <div style="background:#1e2130;border:1px solid rgba(251,191,36,0.3);border-radius:16px;padding:14px 16px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="font-size:20px;">💡</span>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:500;">Living Room Lights</span>
+        </div>
+        <!-- Toggle ON -->
+        <div style="width:46px;height:26px;background:#f59e0b;border-radius:13px;position:relative;flex-shrink:0;box-shadow:0 0 10px rgba(245,158,11,0.4);">
+          <div style="width:22px;height:22px;background:white;border-radius:50%;position:absolute;top:2px;right:2px;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        </div>
+      </div>
+      <!-- Slider: ON state -->
+      <div style="padding:0 2px;">
+        <div style="position:relative;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:4px;">
+          <div style="width:70%;height:100%;background:linear-gradient(to right,#b45309,#f59e0b);border-radius:3px;"></div>
+          <div style="width:20px;height:20px;background:white;border:2px solid #f59e0b;border-radius:50%;position:absolute;top:-7px;left:calc(70% - 10px);box-shadow:0 1px 4px rgba(0,0,0,0.4);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:rgba(255,255,255,0.2);font-size:10px;">Dim</span>
+          <span style="color:#f59e0b;font-size:11px;font-weight:600;">70%</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:10px;">Bright</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light card 2: OFF, dimmable -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 16px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="font-size:20px;opacity:0.4;">💡</span>
+          <span style="color:rgba(255,255,255,0.35);font-size:13px;font-weight:500;">Floor Lamp</span>
+        </div>
+        <!-- Toggle OFF -->
+        <div style="width:46px;height:26px;background:rgba(255,255,255,0.1);border-radius:13px;position:relative;flex-shrink:0;">
+          <div style="width:22px;height:22px;background:rgba(255,255,255,0.4);border-radius:50%;position:absolute;top:2px;left:2px;"></div>
+        </div>
+      </div>
+      <!-- Slider: OFF state (disabled, grayed) -->
+      <div style="padding:0 2px;opacity:0.3;pointer-events:none;">
+        <div style="height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:4px;">
+          <div style="width:55%;height:100%;background:rgba(255,255,255,0.2);border-radius:3px;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:rgba(255,255,255,0.2);font-size:10px;">Dim</span>
+          <span style="color:rgba(255,255,255,0.3);font-size:11px;">55%</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:10px;">Bright</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Light card 3: ON, no dimming (toggle only) -->
+    <div style="background:#1e2130;border:1px solid rgba(251,191,36,0.3);border-radius:16px;padding:14px 16px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="font-size:20px;">💡</span>
+          <span style="color:#e2e8f0;font-size:13px;font-weight:500;">Accent Strip</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:10px;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;">no dimming</span>
+        </div>
+        <!-- Toggle ON -->
+        <div style="width:46px;height:26px;background:#f59e0b;border-radius:13px;position:relative;flex-shrink:0;box-shadow:0 0 10px rgba(245,158,11,0.4);">
+          <div style="width:22px;height:22px;background:white;border-radius:50%;position:absolute;top:2px;right:2px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other card types unchanged - showing SwitchCard for contrast -->
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin:16px 0 10px;padding:0 2px;">Scenes</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px;">
+        <span style="font-size:20px;">📺</span>
+        <div style="color:rgba(255,255,255,0.6);font-size:11px;margin-top:6px;margin-bottom:4px;">Movie Mode</div>
+        <div style="color:rgba(255,255,255,0.4);font-size:12px;">Activate</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px;">
+        <span style="font-size:20px;">☀️</span>
+        <div style="color:rgba(255,255,255,0.6);font-size:11px;margin-top:6px;margin-bottom:4px;">Normal</div>
+        <div style="color:rgba(255,255,255,0.4);font-size:12px;">Activate</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px;">
+  <h3>What changes</h3>
+  <ul style="color:var(--text);line-height:1.8;padding-left:20px;">
+    <li><strong>LightCard only</strong> — all other card types (Switch, Scene, Lock, Climate, Media) stay exactly the same</li>
+    <li>Card is no longer a tap-to-toggle button — the <strong>toggle switch</strong> is the only on/off control</li>
+    <li><strong>Brightness slider</strong> shown when entity supports dimming; hidden for non-dimmable lights</li>
+    <li>Slider is <strong>grayed out and disabled</strong> when the light is off (preserves last brightness)</li>
+    <li>Cards are <strong>full-width</strong> (span both columns of the section grid)</li>
+  </ul>
+</div>
+
+<p class="subtitle">Does this look right? Let me know in the terminal.</p>

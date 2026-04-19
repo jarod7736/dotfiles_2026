@@ -1,0 +1,116 @@
+import { useMemo, useState, useCallback } from 'react'
+import { useEmailTriage } from './hooks/useEmailTriage.js'
+import ProgressBar from './components/ProgressBar.jsx'
+import CategoryColumn from './components/CategoryColumn.jsx'
+import BulkActionBar from './components/BulkActionBar.jsx'
+
+const CATEGORIES = ['action', 'respond', 'read', 'list', 'ad', 'junk']
+
+function formatLastScan(isoStr) {
+  if (!isoStr) return null
+  try {
+    const d = new Date(isoStr)
+    const diffMin = Math.floor((Date.now() - d) / 60000)
+    if (diffMin < 1) return 'just now'
+    if (diffMin === 1) return '1 min ago'
+    if (diffMin < 60) return `${diffMin} min ago`
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  } catch {
+    return null
+  }
+}
+
+export default function App() {
+  const { emails, scanning, progress, lastScan, error, triggerScan, reclassifyEmail, archiveEmail, deleteEmail, spamEmail } = useEmailTriage()
+  const [selectedIds, setSelectedIds] = useState(new Set())
+
+  const byCategory = useMemo(() => {
+    const sorted = [...emails].sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0))
+    return Object.fromEntries(
+      CATEGORIES.map(cat => [cat, sorted.filter(e => e.category === cat)])
+    )
+  }, [emails])
+
+  const handleSelect = useCallback((id, checked) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      checked ? next.add(id) : next.delete(id)
+      return next
+    })
+  }, [])
+
+  const handleSelectAll = useCallback(() => {
+    setSelectedIds(new Set(emails.map(e => e.id)))
+  }, [emails])
+
+  const handleClear = useCallback(() => setSelectedIds(new Set()), [])
+
+  const handleBulkClassify = useCallback(async (category) => {
+    await Promise.all([...selectedIds].map(id => reclassifyEmail(id, category)))
+    setSelectedIds(new Set())
+  }, [selectedIds, reclassifyEmail])
+
+  const handleBulkArchive = useCallback(async () => {
+    await Promise.all([...selectedIds].map(id => archiveEmail(id)))
+    setSelectedIds(new Set())
+  }, [selectedIds, archiveEmail])
+
+  const handleBulkDelete = useCallback(async () => {
+    if (!window.confirm(`Move ${selectedIds.size} email(s) to trash?`)) return
+    await Promise.all([...selectedIds].map(id => deleteEmail(id, true)))
+    setSelectedIds(new Set())
+  }, [selectedIds, deleteEmail])
+
+  const handleBulkSpam = useCallback(async () => {
+    if (!window.confirm(`Mark ${selectedIds.size} email(s) as spam?`)) return
+    await Promise.all([...selectedIds].map(id => spamEmail(id, true)))
+    setSelectedIds(new Set())
+  }, [selectedIds, spamEmail])
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <h1>Holdfast Mail Triage</h1>
+        <div className="header-controls">
+          {lastScan && (
+            <span className="last-scan">Last scan: {formatLastScan(lastScan)}</span>
+          )}
+          {error && (
+            <span style={{ color: '#f87171', fontSize: 12 }}>⚠ {error}</span>
+          )}
+          <button className="btn-refresh" onClick={triggerScan} disabled={scanning}>
+            {scanning ? 'Scanning…' : 'Refresh'}
+          </button>
+        </div>
+      </header>
+
+      <ProgressBar scanning={scanning} progress={progress} />
+
+      <BulkActionBar
+        count={selectedIds.size}
+        onClassify={handleBulkClassify}
+        onArchive={handleBulkArchive}
+        onDelete={handleBulkDelete}
+        onSpam={handleBulkSpam}
+        onClear={handleClear}
+        onSelectAll={handleSelectAll}
+      />
+
+      <main className="kanban-board">
+        {CATEGORIES.map(cat => (
+          <CategoryColumn
+            key={cat}
+            category={cat}
+            emails={byCategory[cat] ?? []}
+            defaultCollapsed={cat === 'list' || cat === 'ad' || cat === 'junk'}
+            selectedIds={selectedIds}
+            onSelect={handleSelect}
+            onArchive={archiveEmail}
+            onDelete={deleteEmail}
+            onSpam={spamEmail}
+          />
+        ))}
+      </main>
+    </div>
+  )
+}

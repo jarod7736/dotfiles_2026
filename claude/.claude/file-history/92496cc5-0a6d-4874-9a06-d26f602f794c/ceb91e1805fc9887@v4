@@ -1,0 +1,44 @@
+const CATEGORIES = [
+  { key: 'action',  label: 'Action Required' },
+  { key: 'respond', label: 'Respond' },
+  { key: 'read',    label: 'Read' },
+  { key: 'list',    label: 'Mailing List' },
+  { key: 'ad',      label: 'Ad' },
+  { key: 'junk',    label: 'Junk' },
+]
+
+export default function BulkActionBar({ count, onClassify, onArchive, onDelete, onSpam, onClear, onSelectAll }) {
+  const hasSelection = count > 0
+
+  return (
+    <div className="bulk-bar">
+      <div className="bulk-classify">
+        {CATEGORIES.map(({ key, label }) => (
+          <button
+            key={key}
+            className={`bulk-btn bulk-btn--cat bulk-btn--${key}`}
+            onClick={() => onClassify(key)}
+            disabled={!hasSelection}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="bulk-actions">
+        <button className="bulk-btn bulk-btn--archive" onClick={onArchive} disabled={!hasSelection}>Archive</button>
+        <button className="bulk-btn bulk-btn--delete"  onClick={onDelete}  disabled={!hasSelection}>Delete</button>
+        <button className="bulk-btn bulk-btn--spam"    onClick={onSpam}    disabled={!hasSelection}>Spam</button>
+      </div>
+
+      <div className="bulk-controls">
+        <button className="bulk-btn bulk-btn--select-all" onClick={onSelectAll}>Select All</button>
+        {hasSelection && (
+          <button className="bulk-btn bulk-btn--clear" onClick={onClear}>
+            Clear ({count})
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}

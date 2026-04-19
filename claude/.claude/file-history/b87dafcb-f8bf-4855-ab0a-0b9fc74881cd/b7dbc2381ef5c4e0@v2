@@ -1,0 +1,93 @@
+<h2>Light Card — Revised</h2>
+<p class="subtitle">2-column grid kept. Toggle top-right, slider below name.</p>
+
+<div class="mockup">
+  <div class="mockup-header">Living Room — Lights section</div>
+  <div class="mockup-body" style="background:#0f1117;padding:16px;font-family:system-ui,sans-serif;">
+
+    <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:10px;padding:0 2px;">Lights</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+
+      <!-- Card 1: ON, dimmable -->
+      <div style="background:#1e2130;border:1px solid rgba(251,191,36,0.3);border-radius:14px;padding:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:20px;">💡</span>
+          <!-- Toggle ON -->
+          <div style="width:36px;height:20px;background:#f59e0b;border-radius:10px;position:relative;flex-shrink:0;box-shadow:0 0 8px rgba(245,158,11,0.4);">
+            <div style="width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:2px;right:2px;"></div>
+          </div>
+        </div>
+        <div style="color:#e2e8f0;font-size:11px;font-weight:500;margin-bottom:10px;line-height:1.3;">Living Room</div>
+        <!-- Slider ON -->
+        <div style="position:relative;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:3px;">
+          <div style="width:70%;height:100%;background:linear-gradient(to right,#b45309,#f59e0b);border-radius:3px;"></div>
+          <div style="width:16px;height:16px;background:white;border:2px solid #f59e0b;border-radius:50%;position:absolute;top:-6px;left:calc(70% - 8px);box-shadow:0 1px 3px rgba(0,0,0,0.4);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;">
+          <span style="color:rgba(255,255,255,0.2);font-size:9px;">Dim</span>
+          <span style="color:#f59e0b;font-size:10px;font-weight:600;">70%</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:9px;">Bright</span>
+        </div>
+      </div>
+
+      <!-- Card 2: OFF, dimmable -->
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:20px;opacity:0.35;">💡</span>
+          <!-- Toggle OFF -->
+          <div style="width:36px;height:20px;background:rgba(255,255,255,0.1);border-radius:10px;position:relative;flex-shrink:0;">
+            <div style="width:16px;height:16px;background:rgba(255,255,255,0.35);border-radius:50%;position:absolute;top:2px;left:2px;"></div>
+          </div>
+        </div>
+        <div style="color:rgba(255,255,255,0.3);font-size:11px;font-weight:500;margin-bottom:10px;line-height:1.3;">Floor Lamp</div>
+        <!-- Slider OFF (grayed) -->
+        <div style="opacity:0.25;">
+          <div style="height:5px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:3px;">
+            <div style="width:55%;height:100%;background:rgba(255,255,255,0.2);border-radius:3px;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;">
+            <span style="color:rgba(255,255,255,0.2);font-size:9px;">Dim</span>
+            <span style="color:rgba(255,255,255,0.3);font-size:10px;">55%</span>
+            <span style="color:rgba(255,255,255,0.2);font-size:9px;">Bright</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: ON, dimmable -->
+      <div style="background:#1e2130;border:1px solid rgba(251,191,36,0.3);border-radius:14px;padding:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:20px;">💡</span>
+          <div style="width:36px;height:20px;background:#f59e0b;border-radius:10px;position:relative;flex-shrink:0;box-shadow:0 0 8px rgba(245,158,11,0.4);">
+            <div style="width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:2px;right:2px;"></div>
+          </div>
+        </div>
+        <div style="color:#e2e8f0;font-size:11px;font-weight:500;margin-bottom:10px;line-height:1.3;">Accent Lights</div>
+        <div style="position:relative;height:5px;background:rgba(255,255,255,0.1);border-radius:3px;margin-bottom:3px;">
+          <div style="width:30%;height:100%;background:linear-gradient(to right,#b45309,#f59e0b);border-radius:3px;"></div>
+          <div style="width:16px;height:16px;background:white;border:2px solid #f59e0b;border-radius:50%;position:absolute;top:-6px;left:calc(30% - 8px);box-shadow:0 1px 3px rgba(0,0,0,0.4);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;">
+          <span style="color:rgba(255,255,255,0.2);font-size:9px;">Dim</span>
+          <span style="color:#f59e0b;font-size:10px;font-weight:600;">30%</span>
+          <span style="color:rgba(255,255,255,0.2);font-size:9px;">Bright</span>
+        </div>
+      </div>
+
+      <!-- Card 4: ON, no dimming -->
+      <div style="background:#1e2130;border:1px solid rgba(251,191,36,0.3);border-radius:14px;padding:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <span style="font-size:20px;">💡</span>
+          <div style="width:36px;height:20px;background:#f59e0b;border-radius:10px;position:relative;flex-shrink:0;box-shadow:0 0 8px rgba(245,158,11,0.4);">
+            <div style="width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:2px;right:2px;"></div>
+          </div>
+        </div>
+        <div style="color:#e2e8f0;font-size:11px;font-weight:500;margin-bottom:8px;line-height:1.3;">Accent Strip</div>
+        <div style="color:rgba(255,255,255,0.2);font-size:10px;">On · no dimming</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:16px;">Does this look right? Let me know in the terminal.</p>

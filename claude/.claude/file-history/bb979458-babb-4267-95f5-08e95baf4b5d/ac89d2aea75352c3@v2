@@ -1,0 +1,99 @@
+<h2>ClimateCard — v3 (tighter dial/button gap)</h2>
+<p class="subtitle">Gap between ring and +/− row halved.</p>
+
+<div style="display:flex;justify-content:center;padding:24px 0;">
+  <div id="card" style="width:340px;background:#1a1a2e;border:1px solid #f59e0b40;border-radius:20px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px;font-family:system-ui,sans-serif;">
+
+    <!-- Room name -->
+    <div style="align-self:flex-start;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ffffff50;">Living Room</div>
+
+    <!-- Dial + button row as one block with tight internal spacing -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:7px;">
+
+      <!-- Dial -->
+      <div style="position:relative;width:200px;height:200px;">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="82"
+            fill="none" stroke="#ffffff12" stroke-width="16" stroke-linecap="round"
+            stroke-dasharray="462 53" stroke-dashoffset="-26"
+            transform="rotate(90 100 100)"
+          />
+          <circle id="fill" cx="100" cy="100" r="82"
+            fill="none" stroke="#f59e0b" stroke-width="16" stroke-linecap="round"
+            stroke-dasharray="277 238" stroke-dashoffset="-26"
+            transform="rotate(90 100 100)"
+            style="transition:stroke-dasharray 300ms ease,stroke 300ms ease;"
+          />
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+          <span style="font-size:10px;color:#ffffff40;letter-spacing:.1em;text-transform:uppercase;">current</span>
+          <span style="font-size:44px;font-weight:700;color:#fff;line-height:1;">71°</span>
+          <span id="target-label" style="font-size:14px;color:#f59e0b;transition:color 300ms;">→ 72°</span>
+        </div>
+      </div>
+
+      <!-- +/− row -->
+      <div style="display:flex;align-items:center;gap:20px;">
+        <button onclick="adjustTemp(-1)" id="minus-btn"
+          style="width:48px;height:48px;border-radius:50%;background:#ffffff12;border:none;color:#fff;font-size:24px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity 200ms;">−</button>
+        <span style="font-size:12px;color:#ffffff40;letter-spacing:.08em;text-transform:uppercase;min-width:60px;text-align:center;">target</span>
+        <button onclick="adjustTemp(1)" id="plus-btn"
+          style="width:48px;height:48px;border-radius:50%;background:#f59e0b;border:none;color:#000;font-size:24px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity 200ms,background 300ms;">+</button>
+      </div>
+
+    </div>
+
+    <!-- Mode pills -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+      <button class="pill" data-mode="heat" data-color="#f59e0b" onclick="setMode(this)" style="padding:6px 14px;border-radius:20px;border:none;background:#f59e0b;color:#000;font-size:12px;font-weight:600;cursor:pointer;">Heat</button>
+      <button class="pill" data-mode="cool" data-color="#60a5fa" onclick="setMode(this)" style="padding:6px 14px;border-radius:20px;border:none;background:#ffffff12;color:#ffffff70;font-size:12px;cursor:pointer;">Cool</button>
+      <button class="pill" data-mode="auto" data-color="#34d399" onclick="setMode(this)" style="padding:6px 14px;border-radius:20px;border:none;background:#ffffff12;color:#ffffff70;font-size:12px;cursor:pointer;">Auto</button>
+      <button class="pill" data-mode="off" data-color="#6b7280" onclick="setMode(this)" style="padding:6px 14px;border-radius:20px;border:none;background:#ffffff12;color:#ffffff70;font-size:12px;cursor:pointer;">Off</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const TEMP_MIN = 60, TEMP_MAX = 85, TRACK_LEN = 462;
+  let target = 72;
+  let currentColor = "#f59e0b";
+
+  function updateDial() {
+    const frac = Math.max(0, Math.min(1, (target - TEMP_MIN) / (TEMP_MAX - TEMP_MIN)));
+    const len = frac * TRACK_LEN;
+    document.getElementById('fill').setAttribute('stroke-dasharray', `${len} ${515 - len}`);
+    document.getElementById('fill').setAttribute('stroke', currentColor);
+    document.getElementById('target-label').textContent = `→ ${target}°`;
+    document.getElementById('target-label').style.color = currentColor;
+    document.getElementById('plus-btn').style.background = currentColor;
+    document.getElementById('plus-btn').style.color = currentColor === '#ffffff12' ? '#fff' : '#000';
+  }
+
+  function adjustTemp(delta) {
+    target = Math.max(TEMP_MIN, Math.min(TEMP_MAX, target + delta));
+    updateDial();
+  }
+
+  function setMode(btn) {
+    document.querySelectorAll('.pill').forEach(p => {
+      p.style.background = '#ffffff12';
+      p.style.color = '#ffffff70';
+      p.style.fontWeight = '400';
+    });
+    const color = btn.dataset.color;
+    btn.style.background = color;
+    btn.style.color = btn.dataset.mode === 'off' ? '#fff' : '#000';
+    btn.style.fontWeight = '600';
+    currentColor = color;
+    document.getElementById('card').style.borderColor = color + '40';
+
+    const isOff = btn.dataset.mode === 'off';
+    document.getElementById('minus-btn').style.opacity = isOff ? '0.3' : '1';
+    document.getElementById('minus-btn').style.pointerEvents = isOff ? 'none' : 'auto';
+    document.getElementById('plus-btn').style.opacity = isOff ? '0.3' : '1';
+    document.getElementById('plus-btn').style.pointerEvents = isOff ? 'none' : 'auto';
+
+    updateDial();
+  }
+</script>

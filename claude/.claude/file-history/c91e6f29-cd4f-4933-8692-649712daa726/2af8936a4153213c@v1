@@ -1,0 +1,115 @@
+import fetch from "node-fetch";
+
+const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
+const GMAIL_MCP = { type: "url", url: "https://gmail.mcp.claude.com/mcp", name: "gmail" };
+const MODEL = "claude-sonnet-4-20250514";
+
+function headers() {
+  return {
+    "Content-Type": "application/json",
+    "x-api-key": process.env.ANTHROPIC_API_KEY,
+    "anthropic-version": "2023-06-01",
+    "anthropic-beta": "mcp-client-2025-04-04"
+  };
+}
+
+async function callClaude(prompt, maxTokens = 4096) {
+  const res = await fetch(ANTHROPIC_API, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: maxTokens,
+      mcp_servers: [GMAIL_MCP],
+      messages: [{ role: "user", content: prompt }]
+    })
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Anthropic API ${res.status}: ${err.substring(0, 300)}`);
+  }
+
+  const data = await res.json();
+  return (data.content || []).filter(b => b.type === "text").map(b => b.text).join("\n");
+}
+
+function extractJSON(text, type = "array") {
+  const pattern = type === "array" ? /\[[\s\S]*\]/ : /\{[\s\S]*\}/;
+  const match = text.match(pattern);
+  if (!match) throw new Error(`No JSON ${type} found in response: ${text.substring(0, 200)}`);
+  return JSON.parse(match[0]);
+}
+
+/**
+ * Fetch last N emails from inbox
+ */
+export async function fetchInboxEmails(maxResults = 100) {
+  const text = await callClaude(`
+Use the Gmail tool to search my inbox with query "in:inbox" and max_results ${maxResults}.
+
+For each message, extract: id, from, subject, date, snippet.
+
+Return ONLY a raw JSON array, no markdown, no backticks:
+[{"id":"...","from":"...","subject":"...","date":"...","snippet":"..."}]
+
+If there's an error accessing Gmail, return: {"error":"description"}
+  `);
+
+  const parsed = extractJSON(text);
+  if (parsed.error) throw new Error(`Gmail error: ${parsed.error}`);
+  return parsed;
+}
+
+/**
+ * Fetch full body of a single message
+ */
+export async function fetchMessageBody(messageId) {
+  const text = await callClaude(`
+Use the Gmail tool to read message ID: ${messageId}
+
+Extract the plain text body (max 1000 chars) and thread message count.
+Return ONLY raw JSON, no markdown:
+{"body":"...","threadCount":1}
+  `, 1000);
+
+  try {
+    return extractJSON(text, "object");
+  } catch {
+    return { body: "", threadCount: 1 };
+  }
+}
+
+/**
+ * Modify a message — add/remove labels (move to spam, apply custom label, etc.)
+ */
+export async function modifyMessage(messageId, { addLabels = [], removeLabels = [] }) {
+  const text = await callClaude(`
+Use the Gmail tool to modify message ID: ${messageId}
+Add label IDs: ${JSON.stringify(addLabels)}
+Remove label IDs: ${JSON.stringify(removeLabels)}
+
+Return ONLY raw JSON: {"success": true} or {"success": false, "error": "..."}
+  `, 500);
+
+  try {
+    return extractJSON(text, "object");
+  } catch {
+    return { success: false, error: "Could not parse response" };
+  }
+}
+
+/**
+ * Get or create a Gmail label by name, return its ID
+ */
+export async function getOrCreateLabel(labelName) {
+  const text = await callClaude(`
+Use the Gmail tool to list all labels, then find or create a label named "${labelName}".
+If it exists, return its ID. If not, create it and return the new ID.
+
+Return ONLY raw JSON: {"labelId": "..."}
+  `, 1000);
+
+  const parsed = extractJSON(text, "object");
+  return parsed.labelId;
+}

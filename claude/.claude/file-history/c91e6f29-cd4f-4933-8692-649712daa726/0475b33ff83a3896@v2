@@ -1,0 +1,136 @@
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import { fetchInboxEmails, modifyMessage, getOrCreateLabel } from "./gmail.js";
+import { classifyAll } from "./classifier.js";
+import { saveCorrection } from "./feedback.js";
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.use(cors());
+app.use(express.json());
+
+// In-memory cache: { emails: [], lastScan: Date, progress: {} }
+let cache = { emails: [], lastScan: null, scanning: false, progress: {} };
+
+/**
+ * GET /api/emails
+ * Returns cached classified emails. Triggers a scan if cache is empty.
+ */
+app.get("/api/emails", async (req, res) => {
+  if (cache.scanning) {
+    return res.json({ scanning: true, progress: cache.progress, emails: cache.emails });
+  }
+  res.json({ scanning: false, emails: cache.emails, lastScan: cache.lastScan });
+});
+
+/**
+ * POST /api/scan
+ * Triggers a fresh inbox scan (non-blocking — returns immediately, poll /api/emails)
+ */
+app.post("/api/scan", async (req, res) => {
+  if (cache.scanning) {
+    return res.json({ message: "Scan already in progress", progress: cache.progress });
+  }
+
+  // Kick off scan in background
+  runScan();
+  res.json({ message: "Scan started" });
+});
+
+/**
+ * GET /api/progress
+ * Returns current scan progress
+ */
+app.get("/api/progress", (req, res) => {
+  res.json({ scanning: cache.scanning, progress: cache.progress });
+});
+
+/**
+ * PATCH /api/emails/:id/category
+ * Manually override the category of an email
+ */
+app.patch("/api/emails/:id/category", (req, res) => {
+  const { id } = req.params;
+  const { category } = req.body;
+  const valid = ["action", "respond", "read", "ad", "junk"];
+  if (!valid.includes(category)) return res.status(400).json({ error: "Invalid category" });
+
+  const email = cache.emails.find(e => e.id === id);
+  if (email) saveCorrection(email, email.category, category);
+  cache.emails = cache.emails.map(e => e.id === id ? { ...e, category } : e);
+  res.json({ success: true });
+});
+
+/**
+ * POST /api/emails/:id/spam
+ * Move email to spam in Gmail
+ */
+app.post("/api/emails/:id/spam", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await modifyMessage(id, {
+      addLabels: ["SPAM"],
+      removeLabels: ["INBOX"]
+    });
+    if (result.success) {
+      cache.emails = cache.emails.filter(e => e.id !== id);
+    }
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * POST /api/emails/:id/label
+ * Apply a custom Gmail label to an email
+ */
+app.post("/api/emails/:id/label", async (req, res) => {
+  const { id } = req.params;
+  const { labelName } = req.body;
+  try {
+    const labelId = await getOrCreateLabel(labelName);
+    const result = await modifyMessage(id, { addLabels: [labelId] });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+async function runScan() {
+  cache.scanning = true;
+  cache.progress = { phase: "Fetching inbox…", current: 0, total: 0 };
+
+  try {
+    // 1. Fetch emails
+    const rawEmails = await fetchInboxEmails(100);
+    cache.progress = { phase: "Classifying…", current: 0, total: rawEmails.length };
+
+    // 2. Classify in batches
+    const classifications = await classifyAll(rawEmails, (p) => {
+      cache.progress = p;
+    });
+
+    // 3. Merge
+    const classMap = Object.fromEntries(classifications.map(c => [c.id, c]));
+    cache.emails = rawEmails.map(e => ({
+      ...e,
+      ...(classMap[e.id] || { category: "read", reason: "Not classified", priority: 2 })
+    }));
+
+    cache.lastScan = new Date().toISOString();
+  } catch (err) {
+    console.error("Scan error:", err.message);
+    cache.progress = { phase: "Error", error: err.message };
+  } finally {
+    cache.scanning = false;
+  }
+}
+
+app.listen(PORT, () => {
+  console.log(`Holdfast Mail Triage server running on http://localhost:${PORT}`);
+  // Auto-scan on startup
+  runScan();
+});

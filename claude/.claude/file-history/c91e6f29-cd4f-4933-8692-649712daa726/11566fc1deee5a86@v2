@@ -1,0 +1,72 @@
+<h2>Dashboard Layout</h2>
+<p class="subtitle">How should the main triage view be structured?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mock-nav" style="font-size:11px;">Holdfast Mail Triage &nbsp;|&nbsp; Last scan: 2 min ago &nbsp;[Refresh]</div>
+      <div style="padding:8px 10px;">
+        <div style="background:#e53e3e;color:#fff;padding:4px 8px;border-radius:4px;font-size:11px;margin-bottom:6px;">⚡ Action Required (3)</div>
+        <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:4px;padding:6px 8px;margin-bottom:4px;font-size:10px;"><strong>Chase Bank</strong> — Payment due reminder<br/><span style="color:#888">Priority 5 · Pay bill before deadline</span></div>
+        <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:4px;padding:6px 8px;margin-bottom:6px;font-size:10px;"><strong>DocuSign</strong> — Please sign your document<br/><span style="color:#888">Priority 4 · Signature required</span></div>
+        <div style="background:#fef3c7;border:1px solid #d97706;border-radius:4px;padding:4px 8px;margin-bottom:6px;font-size:11px;">↩ Respond (2)</div>
+        <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:4px;padding:6px 8px;margin-bottom:4px;font-size:10px;"><strong>Mom</strong> — Are you coming Sunday?<br/><span style="color:#888">Priority 4 · Personal reply needed</span></div>
+        <div style="color:#aaa;font-size:10px;margin-top:6px;">▸ Read (12) &nbsp; ▸ Ad (8) &nbsp; ▸ Junk (5)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Stacked Sections</h3>
+      <p>Categories as collapsible sections, stacked top to bottom by priority. Clean and scannable.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mock-nav" style="font-size:11px;">Holdfast Mail Triage &nbsp;|&nbsp; [Refresh]</div>
+      <div style="display:flex;gap:6px;padding:8px 10px;">
+        <div style="flex:1;">
+          <div style="font-size:10px;font-weight:bold;color:#e53e3e;margin-bottom:4px;">⚡ ACTION</div>
+          <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:3px;padding:5px;margin-bottom:3px;font-size:9px;"><strong>Chase Bank</strong><br/>Payment due</div>
+          <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:3px;padding:5px;font-size:9px;"><strong>DocuSign</strong><br/>Sign document</div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:10px;font-weight:bold;color:#d97706;margin-bottom:4px;">↩ RESPOND</div>
+          <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:3px;padding:5px;font-size:9px;"><strong>Mom</strong><br/>Are you coming?</div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:10px;font-weight:bold;color:#3182ce;margin-bottom:4px;">📖 READ</div>
+          <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:3px;padding:5px;margin-bottom:3px;font-size:9px;"><strong>Amazon</strong><br/>Order shipped</div>
+          <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:3px;padding:5px;font-size:9px;"><strong>GitHub</strong><br/>PR review</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Kanban Columns</h3>
+      <p>Categories as side-by-side columns. See all categories at once, but less room per card.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mock-nav" style="font-size:11px;">Holdfast Mail Triage &nbsp;|&nbsp; [Refresh]</div>
+      <div style="display:flex;height:130px;">
+        <div style="width:90px;border-right:1px solid #ddd;padding:6px;font-size:10px;">
+          <div style="background:#e53e3e;color:#fff;border-radius:3px;padding:3px 5px;margin-bottom:3px;">⚡ Action <span style="float:right">3</span></div>
+          <div style="background:#d97706;color:#fff;border-radius:3px;padding:3px 5px;margin-bottom:3px;">↩ Respond <span style="float:right">2</span></div>
+          <div style="background:#3182ce;color:#fff;border-radius:3px;padding:3px 5px;margin-bottom:3px;">📖 Read <span style="float:right">12</span></div>
+          <div style="color:#aaa;border-radius:3px;padding:3px 5px;margin-bottom:3px;">Ad <span style="float:right">8</span></div>
+          <div style="color:#aaa;border-radius:3px;padding:3px 5px;">Junk <span style="float:right">5</span></div>
+        </div>
+        <div style="flex:1;padding:6px;">
+          <div style="font-size:10px;font-weight:bold;color:#e53e3e;margin-bottom:4px;">⚡ Action Required</div>
+          <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:3px;padding:5px;margin-bottom:3px;font-size:9px;"><strong>Chase Bank</strong> — Payment due reminder &nbsp;<span style="color:#e53e3e">P5</span></div>
+          <div style="background:#f6f6f6;border:1px solid #ddd;border-radius:3px;padding:5px;font-size:9px;"><strong>DocuSign</strong> — Please sign your document &nbsp;<span style="color:#e53e3e">P4</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Sidebar + Main</h3>
+      <p>Category list in a left sidebar, selected category's emails in the main panel.</p>
+    </div>
+  </div>
+</div>

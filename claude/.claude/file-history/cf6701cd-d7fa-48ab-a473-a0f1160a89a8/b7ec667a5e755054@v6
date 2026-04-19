@@ -1,0 +1,47 @@
+import { useState } from 'react'
+import EmailCard from './EmailCard.jsx'
+
+const CATEGORY_META = {
+  action:  { label: 'Action Required', color: '#dc2626' },
+  respond: { label: 'Respond',         color: '#d97706' },
+  read:    { label: 'Read',            color: '#2563eb' },
+  list:    { label: 'Mailing List',    color: '#0891b2' },
+  ad:      { label: 'Ad / Newsletter', color: '#6b7280' },
+  junk:    { label: 'Junk / Spam',     color: '#9ca3af' },
+}
+
+export default function CategoryColumn({ category, emails, defaultCollapsed, selectedIds, onSelect, onArchive, onDelete, onSpam }) {
+  const [collapsed, setCollapsed] = useState(defaultCollapsed)
+  const meta = CATEGORY_META[category]
+
+  return (
+    <div className="column" style={{ '--col-color': meta.color }}>
+      <div className="column-header" onClick={() => setCollapsed(c => !c)}>
+        <span className="column-title">{meta.label}</span>
+        <div className="column-meta">
+          <span className="column-count">{emails.length}</span>
+          <span className="column-chevron">{collapsed ? '▶' : '▼'}</span>
+        </div>
+      </div>
+
+      {!collapsed && (
+        <div className="column-body">
+          {emails.length === 0
+            ? <div className="column-empty">All clear</div>
+            : emails.map(email => (
+                <EmailCard
+                  key={email.id}
+                  email={email}
+                  selected={selectedIds.has(email.id)}
+                  onSelect={onSelect}
+                  onArchive={onArchive}
+                  onDelete={onDelete}
+                  onSpam={onSpam}
+                />
+              ))
+          }
+        </div>
+      )}
+    </div>
+  )
+}
